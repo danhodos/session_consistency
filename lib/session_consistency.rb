@@ -26,9 +26,8 @@ module DanHodos
         
         unless session[:consistency_check] == consistency_checksum
           redirect_to self.class.session_consistency_options[:redirect] and return if self.class.session_consistency_options[:redirect]
+          render :nothing => true, :status => 500
         end
-        
-        session[:consistency_check] == consistency_checksum
       end
     
     private

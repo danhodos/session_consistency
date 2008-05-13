@@ -12,7 +12,7 @@ class SessionConsistencyTest < Test::Unit::TestCase
   def setup
     @controller = SessionConsistencyController.new
     @request    = ActionController::TestRequest.new
-    @request.env["HTTP_USER_AGENT"] = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/522.11.1 (KHTML, like Gecko) Version/3.0.3 Safari/522.12.1"
+    @request.user_agent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/522.11.1 (KHTML, like Gecko) Version/3.0.3 Safari/522.12.1"
     @response   = ActionController::TestResponse.new
   end
   
@@ -34,10 +34,10 @@ class SessionConsistencyTest < Test::Unit::TestCase
   def test_should_halt_filter_chain_if_user_agent_changes
     checksum = consistency_checksum
     
-    @request.env["HTTP_USER_AGENT"] = "Some New User Agent"
+    @request.user_agent = "Some New User Agent"
     get :index, {}, {:consistency_check => checksum }
     
-    assert_response 0
+    assert_response :error
   end
   
   def test_should_halt_filter_chain_if_remote_ip_changes
@@ -46,7 +46,7 @@ class SessionConsistencyTest < Test::Unit::TestCase
     @request.env["REMOTE_ADDR"] = "123.42.67.254"
     get :index, {}, {:consistency_check => checksum }
     
-    assert_response 0
+    assert_response :error
   end
   
 private

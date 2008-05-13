@@ -1,0 +1,30 @@
+SessionConsistency
+==================
+
+Ensures session consistency by checking the user_agent and/or remote_ip before each request. If either of these have changed between requests, the filter chain is halted and a '0' HTTP status code is returned.
+
+Base usage:
+
+  class ApplicationController
+    verify_session_consistency
+  end
+
+You can also specify :except and :only options, just like with a before filter:
+
+  class ApplicationController
+    verify_session_consistency :only => :index
+  end
+  
+Perhaps most usefully, you can specify a :redirect option, which takes the same parameters as redirect_to, like so:
+
+  class ApplicationController
+    verify_session_consistency :redirect => { :action => 'logout' }
+  end
+  
+Finally, you can modify what the consistency check is based on (by default it is both user_agent and remote_ip) like so:
+
+  class ApplicationController
+    verify_session_consistency :based_on => :user_agent
+  end
+  
+Copyright (c) 2007 Dan Hodos, released under the MIT license

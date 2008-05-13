@@ -36,13 +36,6 @@ module DanHodos
         Digest::MD5.hexdigest(string_to_check)
       end
     end # ControllerExtensions
-    
-    # TestRequest doesn't include a user_agent accessor, though CgiRequest does. Let's fix that.
-    module TestExtensions
-      def user_agent
-        env["HTTP_USER_AGENT"]
-      end
-    end
   end # SessionConsistency
 end # DanHodos
 
